@@ -1,13 +1,11 @@
-<script>
-
 chrome.extension.onRequest.addListener( function(request, sender, sendResponse) {
-	
+
 		/**
 		 * Used to avoid problems when opening many photos
 		 */
 		if (request.msg == "openAllPhotos")
 		{
-			
+
 			if( confirm("Are you sure you want to open " + request.imgs.length + " tab(s)? It may take a while to download everything.") )
 			{
 				chrome.windows.create({url: request.imgs[0]}, function(win) {
@@ -17,9 +15,7 @@ chrome.extension.onRequest.addListener( function(request, sender, sendResponse) 
 					}
 				});
 			}
-			
-		}
-		
-});
 
-</script>
+		}
+
+});
