@@ -14,7 +14,7 @@
       "19": "icon16.png",
       "38": "icon48.png"
     },
-    // "default_title": "Google Mail",
+    "default_title": "DownFlickr",
     "default_popup": "popup.html"
   },
 

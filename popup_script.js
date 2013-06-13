@@ -79,7 +79,7 @@
 	 */
 	function getPhotoURL(url)
 	{
-		if( $("#auto").attr("checked") )
+		if( $("#auto").is(":checked") )
 		{
 			var urlArr = url.split(".");
 			urlArr[urlArr.length - 2] += "_d";
