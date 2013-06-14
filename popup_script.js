@@ -1,4 +1,4 @@
-(function(){
+(function() {
 
 	"use strict";
 
@@ -7,9 +7,7 @@
 	var perPage = "&per_page=30";
 	var page = 1;
 
-	/**
-	 * Get all picture sizes and create thumbnail
-	 */
+	// Get all picture sizes and create thumbnail
 	function getPicture(id)
 	{
 		$.ajax({
@@ -51,9 +49,7 @@
 		});
 	}
 
-	/**
-	 * Get all pictures inside some Photoset
-	 */
+	// Get all pictures inside some Photoset
 	function getPhotoset(id)
 	{
 		$.ajax({
@@ -74,12 +70,15 @@
 		});
 	}
 
-	/**
-	 * Get the URL to open or download the big photo
-	 */
+	// Check if Auto Download is active
+	function shouldAutoDownload() {
+		return $("#auto").is(":checked");
+	}
+
+	// Get the URL to open or download the big photo
 	function getPhotoURL(url)
 	{
-		if( $("#auto").is(":checked") )
+		if( shouldAutoDownload() )
 		{
 			var urlArr = url.split(".");
 			urlArr[urlArr.length - 2] += "_d";
@@ -89,9 +88,7 @@
 		return url;
 	}
 
-	/**
-	 * Button handlers
-	 */
+	// Button handlers
 	$(document).ready(function()
 	{
 		// Photo "Get" button
@@ -131,7 +128,8 @@
 			{
 				chrome.extension.sendRequest({
 					msg: "openAllPhotos",
-					imgs: imgs
+					imgs: imgs,
+					autoDownload: shouldAutoDownload()
 				});
 			}
 		});
@@ -148,9 +146,7 @@
 		});
 	});
 
-	/**
-	 * Get the ID from the URL, when possible
-	 */
+	// Get the ID from the URL, when possible
 	chrome.tabs.getSelected(null, function(tab) {
 
 		if( tab.url.indexOf("flickr.com\/photos") > -1 )

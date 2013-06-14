@@ -19,7 +19,7 @@
   },
 
   "permissions": [
-    "http://*.flickr.com/",
+    "*://*.flickr.com/",
     "tabs"
   ]
 
