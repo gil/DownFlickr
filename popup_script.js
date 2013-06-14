@@ -164,7 +164,7 @@
 		{
 			var imgs = [];
 
-			$("img").each(function() {
+			$("#imgContainer img").each(function() {
 				imgs.push( getPhotoURL( $(this).parent().attr("href") ) );
 			});
 
