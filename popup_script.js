@@ -53,7 +53,7 @@
 
 		});
 
-		$("#imgContainer, #disclaimer").show();
+		$("#actions, #imgContainer, #disclaimer").show();
 		startLoading();
 	}
 

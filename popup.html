@@ -3,7 +3,7 @@
 body {
 	text-align: right;
 	min-width: 220px;
-	min-height: 72px;
+	min-height: 52px;
 
 	font-family: helvetica, arial;
 	font-size: 12px;
@@ -33,6 +33,11 @@ button {
 	width: 40px;
 	background-color: #EAEAEA;
 	border: 1px solid #DADADA;
+}
+
+#actions {
+	display: none;
+	margin-top: 12px;
 }
 
 #disclaimer {
@@ -85,10 +90,11 @@ img {
 Photo Id: <input id="photoId" class="textInput" /> <button id="photoOk">Load</button> <br/>
 Set Id: <input id="setId" class="textInput" /> <button id="setOk">Load</button> <br/>
 
-<br/>
-<a id="openAll" href="#">Download all</a> | <a id="clear" href="#">Clear</a><br/>
-<input id="open" name="action" type="radio"><label for="open">Open</label>
-<input id="download" name="action" type="radio" checked><label for="download">Download</label><br/>
+<div id="actions">
+	<a id="openAll" href="#">Download all</a> | <a id="clear" href="#">Clear</a><br/>
+	<input id="open" name="action" type="radio"><label for="open">Open</label>
+	<input id="download" name="action" type="radio" checked><label for="download">Download</label><br/>
+</div>
 
 <div id="imgContainer"></div>
 
