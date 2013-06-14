@@ -6,6 +6,7 @@
 	var apiKeyParam = "&api_key=07e391a86e66960a7449ea81d0d9cd48";
 	var perPage = "&per_page=30";
 	var page = 1;
+	var loadingCount = 0;
 
 	// Get all picture sizes and create thumbnail
 	function getPicture(id)
@@ -40,18 +41,27 @@
 						.append( img )
 						.appendTo( $("#imgContainer") );
 
-					$("#imgContainer, #disclaimer").show();
+					stopLoading();
 
 				}
 
+			},
+
+			error: function() {
+				stopLoading();
 			}
 
 		});
+
+		$("#imgContainer, #disclaimer").show();
+		startLoading();
 	}
 
 	// Get all pictures inside some Photoset
 	function getPhotoset(id)
 	{
+		$(".loadMore").remove();
+
 		$.ajax({
 			url: apiUrl + "flickr.photosets.getPhotos&media=photos&photoset_id=" + id + perPage + "&page=" + page + apiKeyParam,
 			dataType: "xml",
@@ -70,9 +80,43 @@
 		});
 	}
 
+	// Show loader
+	function startLoading() {
+
+		loadingCount++;
+		$("#loading").show();
+	}
+
+	// Hide loader
+	function stopLoading() {
+
+		loadingCount--;
+
+		if( loadingCount < 1 ) {
+			$("#loading").hide();
+			showLoadMore();
+		}
+	}
+
+	// Show button to load more photos
+	function showLoadMore() {
+
+		if( page > 1 ) {
+
+			$("<a/>")
+				.text("Load 30 more...")
+				.attr("href", "#")
+				.on("click", function() {
+					$("#setOk").click();
+				})
+				.addClass("loadMore")
+				.appendTo( $("#imgContainer") );
+		}
+	}
+
 	// Check if Auto Download is active
 	function shouldAutoDownload() {
-		return $("#auto").is(":checked");
+		return $("#download").is(":checked");
 	}
 
 	// Get the URL to open or download the big photo
@@ -91,7 +135,7 @@
 	// Button handlers
 	$(document).ready(function()
 	{
-		// Photo "Get" button
+		// Photo "Load" button
 		$("#photoOk").on("click", function()
 		{
 			if( $("#photoId").attr("value") )
@@ -100,7 +144,7 @@
 			}
 		});
 
-		// Set "Get" button
+		// Set "Load" button
 		$("#setOk").on("click", function()
 		{
 			if( $("#setId").attr("value") )
@@ -112,7 +156,7 @@
 		// Reset the page and the Set button
 		$("#setId").on("keydown", function() {
 			page = 1;
-			$("#setOk").html("Get");
+			$("#setOk").html("Load");
 		});
 
 		// Open all photos
@@ -137,13 +181,16 @@
 		// Clear photos
 		$("#clear").on("click", function()
 		{
-			$("img").each(function() {
-				$(this).parent().remove();
-			});
-
 			page = 1;
-			$("#setOk").html("Get");
+			window.close();
+			// $("#imgContainer").empty();
+			// $("#setOk").html("Load");
 		});
+
+		// Change labels
+		$("#open, #download").on("change", function() {
+			$("#openAll").text( shouldAutoDownload() ? "Download all" : "Open all" )
+		})
 	});
 
 	// Get the ID from the URL, when possible
