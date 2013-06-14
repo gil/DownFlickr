@@ -24,7 +24,8 @@
 
 				chrome.tabs.create({
 					windowId: windowId,
-					url: imagesWaiting.shift()
+					url: imagesWaiting.shift(),
+					active: false
 				}, tabOpened);
 			}
 
