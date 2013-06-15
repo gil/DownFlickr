@@ -204,11 +204,13 @@
 			if( urlParts[5] === "sets")
 			{
 				$("#setId").attr("value", urlParts[6]);
+				$("#setOk").click();
 			}
 			// Photo
 			else if( urlParts.length >= 6 )
 			{
 				$("#photoId").attr("value", urlParts[5]);
+				$("#photoOk").click();
 			}
 
 		}
