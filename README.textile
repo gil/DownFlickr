@@ -1,0 +1,4 @@
+Very simple Flickr photos downloading extension for Google Chrome.
+
+Learn more about this project "here":http://blog.andregil.net/2010/12/downflickr-flickr-downloader/
+Download the extension "here":https://chrome.google.com/extensions/detail/idiemcijhbenngdhkdiipmpkafnkbkeg?hl=en

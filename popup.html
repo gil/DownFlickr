@@ -1,0 +1,103 @@
+<style>
+
+body {
+	text-align: right;
+	min-width: 220px;
+	min-height: 52px;
+
+	font-family: helvetica, arial;
+	font-size: 12px;
+}
+
+a {
+	color: #333;
+}
+
+a:hover {
+	color: #777;
+}
+
+.textInput {
+	width: 100px;
+	height: 20px;
+
+	border: 1px solid #DADADA;
+	margin-left: 6px;
+
+	font-family: helvetica, arial;
+	font-size: 10px;
+	color: #505050;
+}
+
+button {
+	width: 40px;
+	background-color: #EAEAEA;
+	border: 1px solid #DADADA;
+}
+
+#actions {
+	display: none;
+	margin-top: 12px;
+}
+
+#disclaimer {
+	display: none;
+	padding-top: 15px;
+	font-size: 10px;
+}
+
+img {
+  margin: 5px;
+  border: 2px solid black;
+  vertical-align: middle;
+  width: 75px;
+  height: 75px;
+}
+
+#loading {
+  position: absolute;
+  display: none;
+  border: 0;
+  top: 80px;
+  left: 135px;
+  width: 16px;
+  height: 16px;
+}
+
+#imgContainer {
+	margin-top: 10px;
+
+	display: none;
+	overflow-x: hidden;
+
+	width: 285px;
+	max-height: 440px;
+}
+
+.loadMore {
+	display: block;
+	text-align: center;
+	background-color: #DADADA;
+	padding: 10px;
+	text-decoration: none;
+}
+
+</style>
+
+<script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+<script type="text/javascript" src="popup_script.js"></script>
+
+Photo Id: <input id="photoId" class="textInput" /> <button id="photoOk">Load</button> <br/>
+Set Id: <input id="setId" class="textInput" /> <button id="setOk">Load</button> <br/>
+
+<div id="actions">
+	<a id="openAll" href="#">Download all</a> | <a id="clear" href="#">Clear</a><br/>
+	<input id="open" name="action" type="radio"><label for="open">Open</label>
+	<input id="download" name="action" type="radio" checked><label for="download">Download</label><br/>
+</div>
+
+<div id="imgContainer"></div>
+
+<div id="disclaimer">Don't use this extension to download photos that you don't have permission to!</div>
+
+<img id="loading" src="loading.gif" />
