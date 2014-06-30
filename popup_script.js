@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var apiUrl = "http://api.flickr.com/services/rest/?method=";
+	var apiUrl = "https://api.flickr.com/services/rest/?method=";
 	var apiKeyParam = "&api_key=07e391a86e66960a7449ea81d0d9cd48";
 	var perPage = "&per_page=30";
 	var page = 1;
