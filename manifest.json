@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "DownFlickr - Flickr Downloader",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Flickr photos downloader extension.",
 
   "background": {
@@ -20,7 +20,8 @@
 
   "permissions": [
     "*://*.flickr.com/",
-    "tabs"
+    "tabs",
+    "downloads"
   ]
 
 }

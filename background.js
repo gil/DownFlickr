@@ -62,29 +62,57 @@
 		}
 	}
 
+	//////////////////////
+
+	function newDownloadNext() {
+
+		if( imagesWaiting.length > 0 && openTabsCount < 5 ) {
+			openTabsCount++;
+			chrome.downloads.download(imagesWaiting.shift(), function(downloadId) {
+				openTabs[downloadId] = true;
+			});
+			newDownloadNext();
+		}
+	}
+
+	chrome.downloads.onChanged.addListener(function(delta) {
+
+		if( delta.state && delta.state.current === "complete" && openTabs[delta.id] === true ) {
+			delete openTabs[delta.id];
+			openTabsCount--;
+			newDownloadNext();
+		}
+	});
+
+	//////////////////////
+
 	// Listen for request to open all photos
 	chrome.extension.onRequest.addListener( function(request, sender, sendResponse)
 	{
 		if (request.msg === "openAllPhotos")
 		{
-			if( confirm("Are you sure you want to open " + request.imgs.length + " tab(s)? It may take a while to load everything.") )
-			{
-				// Open a new window with a blank page
-				chrome.windows.create({url: "about:blank"}, function(win) {
+			cleanBeforeLoad();
+			imagesWaiting = request.imgs;
+			newDownloadNext();
 
-					cleanBeforeLoad();
+			// if( confirm("Are you sure you want to open " + request.imgs.length + " tab(s)? It may take a while to load everything.") )
+			// {
+			// 	// Open a new window with a blank page
+			// 	chrome.windows.create({url: "about:blank"}, function(win) {
 
-					windowId = win.id;
-					autoDownload = request.autoDownload;
-					imagesWaiting = request.imgs;
+			// 		cleanBeforeLoad();
 
-					if( autoDownload ) {
-						listenForTabClose();
-					}
+			// 		windowId = win.id;
+			// 		autoDownload = request.autoDownload;
+			// 		imagesWaiting = request.imgs;
 
-					openNextImage();
-				});
-			}
+			// 		if( autoDownload ) {
+			// 			listenForTabClose();
+			// 		}
+
+			// 		openNextImage();
+			// 	});
+			// }
 		}
 	});
 

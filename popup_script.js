@@ -11,6 +11,46 @@
 	// Get all picture sizes and create thumbnail
 	function getPicture(id)
 	{
+		getPhotoSizes(id, function(id, thumbUrl, bigUrl) {
+			getPhotoTitle(id, bigUrl, function(id, title) {
+				renderThumb(id, thumbUrl, bigUrl, title);
+				stopLoading();
+			});
+		});
+
+		$("#actions, #imgContainer, #disclaimer").show();
+		startLoading();
+	}
+
+	function getPhotoTitle(id, url, callback) {
+
+		$.ajax({
+			url: apiUrl + "flickr.photos.getInfo&photo_id=" + id + apiKeyParam,
+
+			success: function(xml) {
+
+				var title = $(xml).find("title");
+
+				if( title ) {
+					var urlParts = url.split(".");
+					title = (title.text() || "").trim().replace(/\W/g, "_") + "." + urlParts[urlParts.length - 1];
+					title = title.split("?")[0];
+				} else {
+					title = undefined;
+				}
+
+				callback(id, title);
+
+			},
+
+			error: function() {
+				callback(id, undefined);
+			}
+		});
+	}
+
+	function getPhotoSizes(id, callback) {
+
 		$.ajax({
 			url: apiUrl + "flickr.photos.getSizes&photo_id=" + id + apiKeyParam,
 			dataType: "xml",
@@ -21,30 +61,9 @@
 				var thumbUrl = size.first().attr("source");
 				var bigUrl = size.last().attr("source");
 
-				if( thumbUrl && bigUrl )
-				{
-
-					var img = $("<img/>")
-						.attr("src", thumbUrl);
-
-					var link = $("<a/>")
-						.on("click", function() {
-
-							// Used to, maybe, replace the URL when clicking with the download URL
-							link.attr( "href", getPhotoURL( link.attr("href") ) );
-
-						})
-						.attr({
-							"href" : bigUrl,
-							"target" : "_blank"
-						})
-						.append( img )
-						.appendTo( $("#imgContainer") );
-
-					stopLoading();
-
+				if( thumbUrl && bigUrl ) {
+					callback(id, thumbUrl, bigUrl);
 				}
-
 			},
 
 			error: function() {
@@ -52,9 +71,31 @@
 			}
 
 		});
+	}
 
-		$("#actions, #imgContainer, #disclaimer").show();
-		startLoading();
+	function renderThumb(id, thumbUrl, bigUrl, title) {
+
+		var img = $("<img/>").attr("src", thumbUrl);
+
+		var link = $("<a/>")
+			.on("click", function(e) {
+
+				// Used to, maybe, replace the URL when clicking with the download URL to allow changing with/without "_d"
+				link.attr( "href", getPhotoURL(bigUrl) );
+
+				// Let's ignore default behaviour and use our code now
+				openAllPhotos([{ url: getPhotoURL(bigUrl), filename: title }]);
+				e.preventDefault();
+
+			})
+			.attr({
+				"href" : bigUrl,
+				"title" : title,
+				"download" : title,
+				"target" : "_blank"
+			})
+			.append( img )
+			.appendTo( $("#imgContainer") );
 	}
 
 	// Get all pictures inside some Photoset
@@ -132,6 +173,15 @@
 		return url;
 	}
 
+	function openAllPhotos(imgs) {
+
+		chrome.extension.sendRequest({
+			msg: "openAllPhotos",
+			imgs: imgs,
+			autoDownload: shouldAutoDownload()
+		});
+	}
+
 	// Button handlers
 	$(document).ready(function()
 	{
@@ -165,16 +215,16 @@
 			var imgs = [];
 
 			$("#imgContainer img").each(function() {
-				imgs.push( getPhotoURL( $(this).parent().attr("href") ) );
+				var img = $(this).parent();
+				imgs.push({
+					url: getPhotoURL( img.attr("href") ),
+					filename: img.attr("title")
+				});
 			});
 
-			if( imgs.length > 0 )
-			{
-				chrome.extension.sendRequest({
-					msg: "openAllPhotos",
-					imgs: imgs,
-					autoDownload: shouldAutoDownload()
-				});
+			if( imgs.length > 0 ) {
+				openAllPhotos(imgs);
+				window.close();
 			}
 		});
 
