@@ -5,8 +5,7 @@
   "description": "Flickr photos downloader extension.",
 
   "background": {
-    "scripts": ["background.js"]/*,
-    "persistent": false*/
+    "scripts": ["background.js"]
   },
 
   "browser_action": {
