@@ -33,7 +33,7 @@
 
 				if( title != null && title.text() != "" ) {
 					var urlParts = url.split(".");
-					title = filenameSanitize((title.text() || "").trim(), "_") + "." + urlParts[urlParts.length - 1];
+					title = filenameSanitize((title.text() || "Untitled").trim(), "_") + "." + urlParts[urlParts.length - 1];
 					title = title.split("?")[0];
 				} else {
 					title = undefined;
@@ -187,13 +187,15 @@
 	var controlRe = /[\x00-\x1f\x80-\x9f]/g;
 	var reservedRe = /^\.+$/;
 	var windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+	var multipleSpaceRe = /\s+/g;
 
 	function filenameSanitize(input, replacement) {
 	  return input
 	    .replace(illegalRe, replacement)
 	    .replace(controlRe, replacement)
 	    .replace(reservedRe, replacement)
-	    .replace(windowsReservedRe, replacement);
+	    .replace(windowsReservedRe, replacement)
+	    .replace(multipleSpaceRe, " ");
 	}
 
 	// Button handlers
