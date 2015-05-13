@@ -68,11 +68,22 @@
 
 		if( imagesWaiting.length > 0 && openTabsCount < 5 ) {
 			openTabsCount++;
-			chrome.downloads.download(imagesWaiting.shift(), function(downloadId) {
-				openTabs[downloadId] = true;
-			});
+			callDownload(imagesWaiting.shift(), true);
 			newDownloadNext();
 		}
+	}
+
+	function callDownload(image, canRetry) {
+
+		chrome.downloads.download(image, function(downloadId) {
+			if( downloadId ) {
+				openTabs[downloadId] = true;
+			} else if(canRetry) {
+				// Couldn't download? Try removing title from name and fallback to original.
+				delete image.filename;
+				callDownload(image, false);
+			}
+		});
 	}
 
 	chrome.downloads.onChanged.addListener(function(delta) {
