@@ -31,7 +31,7 @@
 
 				var title = $(xml).find("title");
 
-				if( title ) {
+				if( title != null && title.text() != "" ) {
 					var urlParts = url.split(".");
 					title = filenameSanitize((title.text() || "").trim(), "_") + "." + urlParts[urlParts.length - 1];
 					title = title.split("?")[0];
