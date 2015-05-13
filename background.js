@@ -93,6 +93,11 @@
 		{
 			cleanBeforeLoad();
 			imagesWaiting = request.imgs;
+
+			if( imagesWaiting.length === 1 ) {
+				imagesWaiting[0].saveAs = true;
+			}
+
 			newDownloadNext();
 
 			// if( confirm("Are you sure you want to open " + request.imgs.length + " tab(s)? It may take a while to load everything.") )
