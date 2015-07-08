@@ -33,7 +33,7 @@
 
 				if( title != null && title.text() != "" ) {
 					var urlParts = url.split(".");
-					title = filenameSanitize((title.text() || "Untitled").trim(), "_") + "." + urlParts[urlParts.length - 1];
+					title = filenameSanitize((title.text() || "Untitled").trim(), "_") + "-" + id + "." + urlParts[urlParts.length - 1];
 					title = title.split("?")[0];
 				} else {
 					title = undefined;
