@@ -286,7 +286,7 @@
 			var urlParts = tab.url.split("/");
 
 			// Set
-			if( urlParts[5] === "sets")
+			if( ["sets", "albums"].indexOf(urlParts[5]) > -1 )
 			{
 				$("#setId").attr("value", urlParts[6]);
 				$("#setOk").click();
